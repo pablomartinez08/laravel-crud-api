@@ -189,4 +189,26 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Usuario actualizado', 'user' => new UserResource($user)], 200);
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/users/delete",
+     *     summary="Eliminar usuario autenticado",
+     *     tags={"Usuarios"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuario eliminado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Usuario eliminado")
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="No autenticado")
+     * )
+     */
+    public function delete(Request $request)
+    {
+        $request->user()->delete();
+        return response()->json(['message' => 'Usuario eliminado']);
+    }
 }

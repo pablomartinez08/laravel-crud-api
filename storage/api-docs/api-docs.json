@@ -259,6 +259,41 @@
                 ]
             }
         },
+        "/api/v1/users/delete": {
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Eliminar usuario autenticado",
+                "operationId": "c032e38cfe6b094d07e50cf3bf7fffee",
+                "responses": {
+                    "200": {
+                        "description": "Usuario eliminado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario eliminado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/v1/courts": {
             "get": {
                 "tags": [
