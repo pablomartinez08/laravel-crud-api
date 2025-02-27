@@ -1,0 +1,1862 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API REST Panel de Control de Club Deportivo",
+        "description": "API para autenticación y gestión de un club deportivo",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api/v1",
+            "description": "Servidor local"
+        }
+    ],
+    "paths": {
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Registrar un nuevo usuario",
+                "operationId": "6795f2f85dc8207154329e145be90507",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario registrado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Iniciar sesión",
+                "operationId": "45bde25b97150f3e175435ff049d7ed1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Inicio de sesión exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciales incorrectas"
+                    }
+                }
+            }
+        },
+        "/api/v1/me": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Obtener información del usuario autenticado",
+                "operationId": "5f227de8b9922c960bfbf4c71aec3258",
+                "responses": {
+                    "200": {
+                        "description": "Datos del usuario autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Cerrar sesión",
+                "operationId": "80dc31d133a26824da13849a3b19cfba",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sesión cerrada correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users/update": {
+            "put": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Actualizar datos del usuario autenticado",
+                "operationId": "9627a0aa020f4aa34e81adda04855383",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuario actualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario actualizado"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/courts": {
+            "get": {
+                "tags": [
+                    "Pistas"
+                ],
+                "summary": "Listar todas las pistas",
+                "operationId": "dd5e9c4eb400bbef800707aebf805801",
+                "responses": {
+                    "200": {
+                        "description": "Lista de pistas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CourtResource"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Pistas"
+                ],
+                "summary": "Registrar una nueva pista",
+                "operationId": "5ad21879b0592303f39a12078a74160e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreCourtRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pista registrada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourtResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/courts/{id}": {
+            "get": {
+                "tags": [
+                    "Pistas"
+                ],
+                "summary": "Obtener una pista por ID",
+                "operationId": "24d67680b98625e4a46640b06fbca301",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Datos de la pista",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourtResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pista no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Pistas"
+                ],
+                "summary": "Actualizar una pista",
+                "operationId": "822dffd21225e33c274002ba4a74eee9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCourtRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pista actualizada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourtResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Pistas"
+                ],
+                "summary": "Eliminar una pista",
+                "operationId": "a0d875024139da99678e6ebcfb4ded9d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Pista eliminada correctamente"
+                    },
+                    "404": {
+                        "description": "Pista no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Pistas"
+                ],
+                "summary": "Actualizar parcialmente una pista",
+                "operationId": "5a51bc0c9024b5efd8da6e55c2d9eda2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCourtRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pista actualizada parcialmente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourtResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pista no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/courts/available": {
+            "get": {
+                "tags": [
+                    "Pistas"
+                ],
+                "summary": "Buscar pistas disponibles",
+                "operationId": "032c3429306609b1b3a589418ef9119b",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha de la reserva en formato Y-m-d",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-02-28"
+                        }
+                    },
+                    {
+                        "name": "sport_id",
+                        "in": "query",
+                        "description": "ID del deporte para filtrar las pistas",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "member_id",
+                        "in": "query",
+                        "description": "ID del socio que realiza la consulta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 5
+                        }
+                    },
+                    {
+                        "name": "time",
+                        "in": "query",
+                        "description": "Hora específica para verificar disponibilidad (opcional)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "time",
+                            "example": "10:00"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de pistas disponibles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CourtResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parámetros inválidos"
+                    },
+                    "500": {
+                        "description": "Error en el servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/members": {
+            "get": {
+                "tags": [
+                    "Socios"
+                ],
+                "summary": "Obtener lista de socios",
+                "description": "Retorna un listado paginado de socios con sus reservas asociadas",
+                "operationId": "1bc1ecf5710d9adbdd092afa53bae13c",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de página para la paginación",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de socios",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/MemberResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Socios"
+                ],
+                "summary": "Crear un nuevo socio",
+                "description": "Crea un socio con la información proporcionada",
+                "operationId": "644a10d6b7f8dbb03dc6e5bc0cfb2f38",
+                "requestBody": {
+                    "description": "Datos para crear un socio",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMemberRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Socio creado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MemberResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/members/{id}": {
+            "get": {
+                "tags": [
+                    "Socios"
+                ],
+                "summary": "Obtener un socio por ID",
+                "description": "Retorna un socio en base a su ID",
+                "operationId": "51c01a01f41c1898336dc8ab8a9aba3f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del Socio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Socio encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MemberResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Socio no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Socios"
+                ],
+                "summary": "Actualizar un socio (reemplazo total)",
+                "description": "Actualiza la información completa de un socio",
+                "operationId": "8ad56113b206d55c654be44bae1ab032",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del socio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos para actualizar el socio",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateMemberRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Socio actualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MemberResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Socio no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Socios"
+                ],
+                "summary": "Eliminar un socio",
+                "description": "Borra un socio usando su ID",
+                "operationId": "4dc5bc156846fd552c4b77d12287723b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del socio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Socio eliminado exitosamente"
+                    },
+                    "404": {
+                        "description": "Socio no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Socios"
+                ],
+                "summary": "Actualizar parcialmente un socio",
+                "description": "Sólo actualiza los campos enviados en el request",
+                "operationId": "bb2858c1919909f007be61594731b71c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del socio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos para actualizar parcialmente el socio",
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateMemberRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Socio actualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MemberResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Socio no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/reservations": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Obtener lista de reservas",
+                "description": "Devuelve un listado paginado de reservas con información del socio y la pista",
+                "operationId": "7fce57eed139dca21be9f8f3bce67d70",
+                "responses": {
+                    "200": {
+                        "description": "Lista de reservas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ReservationResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Crear una nueva reserva",
+                "description": "Registra una reserva en la base de datos",
+                "operationId": "fc082e16ea2f3a97f378e946ac6b7b46",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreReservationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Reserva creada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReservationResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/reservations/{id}": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Obtener una reserva por ID",
+                "description": "Devuelve los datos de una reserva específica junto con información del socio y la pista",
+                "operationId": "695883ff60d9eedd252eadd9cf3f53cb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reserva encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReservationResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Actualizar una reserva",
+                "description": "Modifica una reserva existente",
+                "operationId": "d756f9cb19a6fe051557d6e84019125a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateReservationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reserva actualizada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReservationResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Eliminar una reserva",
+                "description": "Borra una reserva usando su ID",
+                "operationId": "ec63c6b26bd88738be38deb8fca0c6eb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Reserva eliminada correctamente"
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Actualizar parcialmente una reserva",
+                "description": "Modifica solo los campos enviados en la solicitud",
+                "operationId": "3aa4b8ba37f14d9a21862d887543dde2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateReservationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reserva actualizada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReservationResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Reserva no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/reservations/by-day": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Obtener reservas por día",
+                "description": "Devuelve todas las reservas de una fecha específica",
+                "operationId": "a82c6552c08f352498c9712064601f59",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha en formato YYYY-MM-DD",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-06-15"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de reservas en la fecha especificada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "reservations": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ReservationResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en la validación de la fecha"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/sports": {
+            "get": {
+                "tags": [
+                    "Deportes"
+                ],
+                "summary": "Obtener lista de deportes",
+                "description": "Devuelve un listado paginado de deportes junto con sus canchas asociadas",
+                "operationId": "59bc921dc5d60ecd9fbdc9995d7ca6b9",
+                "responses": {
+                    "200": {
+                        "description": "Lista de deportes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SportResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Deportes"
+                ],
+                "summary": "Crear un nuevo deporte",
+                "description": "Registra un nuevo deporte en la base de datos",
+                "operationId": "e82e4b406d69af25a836690663a9e946",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreSportRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Deporte creado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SportResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/sports/{id}": {
+            "get": {
+                "tags": [
+                    "Deportes"
+                ],
+                "summary": "Obtener un deporte por ID",
+                "description": "Devuelve los datos de un deporte específico junto con sus canchas asociadas",
+                "operationId": "46bf7bdbd39dfc8829aeaf06d47c3fda",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del deporte",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deporte encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SportResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Deporte no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Deportes"
+                ],
+                "summary": "Actualizar un deporte",
+                "description": "Modifica un deporte existente en la base de datos",
+                "operationId": "13826660186b7738eb292b4978456ec0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del deporte",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateSportRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Deporte actualizado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SportResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Deporte no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Deportes"
+                ],
+                "summary": "Eliminar un deporte",
+                "description": "Borra un deporte usando su ID",
+                "operationId": "d4ea7921ed67b57885f619b27524dde6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del deporte",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deporte eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Deporte no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Deportes"
+                ],
+                "summary": "Actualizar parcialmente un deporte",
+                "description": "Modifica solo los campos enviados en la solicitud",
+                "operationId": "4147df603d73e4223b2544862fbb3256",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del deporte",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateSportRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Deporte actualizado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SportResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Deporte no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "title": "Login Request",
+                "description": "Datos necesarios para iniciar sesión",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "12345678"
+                    }
+                },
+                "type": "object"
+            },
+            "RegisterRequest": {
+                "title": "Register Request",
+                "description": "Datos necesarios para registrar un usuario",
+                "required": [
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "12345678"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreCourtRequest": {
+                "title": "Store Court Request",
+                "description": "Datos necesarios para crear una pista",
+                "required": [
+                    "name",
+                    "sport_id"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Cancha 1"
+                    },
+                    "sport_id": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "StoreMemberRequest": {
+                "title": "Solicitud para crear un socio",
+                "description": "Datos necesarios para registrar un nuevo socio",
+                "required": [
+                    "name",
+                    "email",
+                    "phone"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255,
+                        "example": "john@example.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20,
+                        "example": "+34123456789"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreReservationRequest": {
+                "title": "Store Reservation Request",
+                "description": "Datos necesarios para crear una reserva",
+                "required": [
+                    "member_id",
+                    "court_id",
+                    "date",
+                    "time"
+                ],
+                "properties": {
+                    "member_id": {
+                        "description": "ID del miembro",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "court_id": {
+                        "description": "ID de la pista",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-06-15"
+                    },
+                    "time": {
+                        "type": "string",
+                        "example": "14:00"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreSportRequest": {
+                "title": "Store Sport Request",
+                "description": "Datos necesarios para registrar un nuevo deporte",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Fútbol"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Deporte en el que dos equipos compiten para anotar goles"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateCourtRequest": {
+                "title": "Update Court Request",
+                "description": "Datos para actualizar una pista",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Cancha 1"
+                    },
+                    "sport_id": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateMemberRequest": {
+                "title": "Update Member Request",
+                "description": "Datos necesarios para actualizar un socio",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Jane Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255,
+                        "example": "jane@example.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20,
+                        "example": "+34123456789"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateReservationRequest": {
+                "title": "Update Reservation Request",
+                "description": "Datos para actualizar una reserva",
+                "properties": {
+                    "member_id": {
+                        "description": "ID del miembro",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "court_id": {
+                        "description": "ID de la pista",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-06-15"
+                    },
+                    "time": {
+                        "type": "string",
+                        "example": "14:00"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateSportRequest": {
+                "title": "Update Sport Request",
+                "description": "Datos necesarios para actualizar un deporte",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Fútbol"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Deporte en el que dos equipos compiten para anotar goles"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateUserRequest": {
+                "title": "Update User Request",
+                "description": "Datos necesarios para actualizar un usuario",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "newpassword"
+                    }
+                },
+                "type": "object"
+            },
+            "CourtResource": {
+                "title": "Court Resource",
+                "description": "Datos de la pista deportiva",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Cancha 1"
+                    },
+                    "sport": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "Tenis"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-26T12:05:09Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-26T12:05:09Z"
+                    }
+                },
+                "type": "object"
+            },
+            "MemberResource": {
+                "title": "Member Resource",
+                "description": "Representación de un socio en las respuestas de la API",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+34123456789"
+                    },
+                    "reservations": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "court_id": {
+                                    "type": "integer",
+                                    "example": 3
+                                },
+                                "date": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "example": "2025-01-01"
+                                },
+                                "time": {
+                                    "type": "string",
+                                    "example": "10:00"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ReservationResource": {
+                "title": "Reservation Resource",
+                "description": "Representación de una reserva en la API",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "member": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 10
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "John Doe"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "court": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "Court A"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-06-15"
+                    },
+                    "time": {
+                        "type": "string",
+                        "example": "14:00"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-06-14T12:05:09Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-06-14T12:10:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "SportResource": {
+                "title": "Sport Resource",
+                "description": "Representación de un deporte en la API",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Tenis"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Deporte de raqueta jugado en una cancha rectangular."
+                    },
+                    "courts": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 3
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "Court A"
+                                },
+                                "sport_id": {
+                                    "type": "integer",
+                                    "example": 1
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-06-14T12:05:09Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-06-14T12:10:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "title": "User Resource",
+                "description": "Datos del usuario",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-26T12:05:09Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-26T12:05:09Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Usuarios",
+            "description": "Endpoints relacionados con autenticación de usuarios"
+        },
+        {
+            "name": "Pistas",
+            "description": "Endpoints relacionados con la gestión de pistas deportivas"
+        },
+        {
+            "name": "Socios",
+            "description": "Endpoints para gestionar socios"
+        },
+        {
+            "name": "Reservas",
+            "description": "Endpoints para gestionar reservas de pistas"
+        },
+        {
+            "name": "Deportes",
+            "description": "Endpoints para gestionar deportes"
+        }
+    ]
+}
