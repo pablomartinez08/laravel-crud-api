@@ -18,13 +18,21 @@ Este proyecto es una API REST desarrollada en Laravel 11 para la gestión de soc
 git clone https://github.com/pablomartinez08/laravel-crud-api.git
 cd laravel-crud-api
 
+2️⃣ Instalar dependencias
+
+Ejecuta el siguiente comando en la raíz del proyecto:
+
+composer install
+Esto descargará la carpeta vendor/ y todas las librerías necesarias.
+
 ## 🛠 Configuración del entorno
 
 Configurar la base de datos en .env:
 
 Este proyecto usa PostgreSQL como base de datos.
-La base de datos debe llamarse laravel.
 Ajustar las credenciales en .env según tu configuración.
+Generar la clave de la aplicación:
+php artisan key:generate
 
 🛢️ Base de datos
 Estructura y Datos Iniciales

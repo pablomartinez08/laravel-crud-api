@@ -23,12 +23,12 @@ SET row_security = off;
 -- Name: laravel; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE laravel WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'Spanish_Spain.1252';
+-- CREATE DATABASE laravel2 WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'Spanish_Spain.1252';
 
 
-ALTER DATABASE laravel OWNER TO postgres;
+-- ALTER DATABASE laravel2 OWNER TO postgres;
 
-\connect laravel
+-- \connect laravel2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
